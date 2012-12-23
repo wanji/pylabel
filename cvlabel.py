@@ -39,7 +39,7 @@ def help(prog):
   lc.perr("\ts: only true on label2\n");
   lc.perr("\td: true label / true on both labels\n");
   lc.perr("\tf: false label / false on both labels\n");
-  lc.perr("\t0~9: inteval(100ms); 0 indicates infinite wait time\n");
+  lc.perr("\t0~9: interval(100ms); 0 indicates infinite wait time\n");
   lc.perr("\tESC: quit the program\n");
 
 def main(argv):
@@ -55,6 +55,7 @@ def main(argv):
 
   # Load configuration
   (db_path, tb_name, imlist, labels) = lc.load_cfg(lc.cfg_path);
+  (default_interval) = lc.load_cv_cfg(lc.cfg_path);
 
   # Check if the database exists
   lc.check_db(db_path, tb_name, imlist, labels);
@@ -109,7 +110,7 @@ def main(argv):
   conn = sqlite3.connect(db_path)
   c = conn.cursor();
 
-  inteval = 0;
+  interval = 0;
   proclst = [];
   idx = -1;
 
@@ -130,11 +131,11 @@ def main(argv):
     print idx, [str(x) for x in item];
 
     cv2.imshow(imshow_title, cv2.imread(item[0]));
-    key = cv2.waitKey(inteval);
+    key = cv2.waitKey(interval);
     if (-1 == key):
       key = 1048678;
     elif (key >= 1048624 and key <= 1048633):
-      inteval = 100 * (key - 1048624);
+      interval = 100 * (key - 1048624);
       continue;
       
 
@@ -144,7 +145,7 @@ def main(argv):
       break;
     # j pressed, move forward
     elif (1048682 == key):
-      inteval = 0;
+      interval = 0;
       idx += 1;
       print "up", idx;
       if (idx >= len(proclst)):
@@ -156,7 +157,7 @@ def main(argv):
       continue;
     # k pressed, move backward
     elif (1048683 == key):
-      inteval = 0;
+      interval = 0;
       idx -= 1;
       print "down", idx;
       if (idx < 0):
@@ -169,9 +170,8 @@ def main(argv):
     # a/s/d/f pressed
     elif (2 == label_num and key in [a_, s_, d_, f_]) or  \
          (1 == label_num and key in [d_, f_]):
-      # inteval = 200;
       if (key == f_):
-        inteval = 200;
+        interval = default_interval;
       c.execute(update_sql[key],  (item[0], ));
       # conn.commit();
       if (idx < len(proclst) - 1):

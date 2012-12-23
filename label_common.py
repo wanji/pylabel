@@ -64,3 +64,15 @@ def load_cfg(cfg_path):
 
   return (db_path, tb_name, imlist, labels);
 
+# Load configuration
+def load_cv_cfg(cfg_path):
+  config = ConfigParser.RawConfigParser()
+  try:
+    config.read(cfg_path);
+    interval = config.getint('cv', 'interval');
+  except:
+    perr("Invalid Configuration File!\n");
+    sys.exit(1);
+  
+  return (interval);
+

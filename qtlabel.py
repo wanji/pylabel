@@ -113,7 +113,7 @@ class MainWindow(QMainWindow):
       # Image rows and cols
       try:
         self.cols = config.getint('qt', 'image_cols');
-        self.rows = config.getint('qt', 'image_cols');
+        self.rows = config.getint('qt', 'image_rows');
       except:
         self.rows  = 4;
         self.cols  = 4;
@@ -183,7 +183,7 @@ class MainWindow(QMainWindow):
       self.imshow = [ImShow(self.tb_name) for x in range(self.pagesize)];
       
       self.lcl_proc = QLabel("Proc: %d/%d" % (1, self.npages));
-      self.btn_save = QPushButton("Save & Next(&W)");
+      self.btn_save = QPushButton("Save && Next(&W)");
       self.btn_prev = QPushButton("Prev(&E)");
       self.btn_next = QPushButton("Next(&R)");
 
@@ -245,7 +245,7 @@ class MainWindow(QMainWindow):
       self.c.execute(fetch_sql);
       item = self.c.fetchone();
       if None == item:
-        QMessageBox.warning(self, "Attention!", "Label '%s' is finished!" % self.sel_label);
+        QMessageBox.warning(self, "Attention!", unicode("Label '%s' is finished!" % self.sel_label));
         self.setProc(0);
       else:
         self.setProc(self.imlist.index(item[0]));
