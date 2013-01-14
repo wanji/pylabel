@@ -26,6 +26,8 @@ def initdb(db_path, tb_name, imlist, labels):
   sqlstr += ");"
   print sqlstr;
   curs.execute(sqlstr);
+  # Create index for 'img' for fast query
+  curs.execute("CREATE  INDEX 'main'.'idx' ON 'labels' ('img' ASC)");
 
   to_db = [tuple([line]) + tuple(['0'] * len(labels)) for line in imlist];
 
