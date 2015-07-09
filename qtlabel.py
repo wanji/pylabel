@@ -23,6 +23,16 @@ import numpy as np
 import label_common as lc
 
 
+class ImView(QLabel):
+    def __init__(self, parent, pixmap):
+        super(ImView, self).__init__(parent)
+        self.pixmap = pixmap
+
+    def resizeEvent(self, event):
+        self.setPixmap(self.pixmap.scaled(
+            self.size(), Qt.KeepAspectRatio))
+
+
 class ImShow(QLabel):
     def __init__(self, tb_name):
         super(ImShow, self).__init__()
@@ -73,10 +83,21 @@ class ImShow(QLabel):
 
     # mouse click
     def mouseReleaseEvent(self, event):
-        if self.status == 'f' or self.status == '0':
-            self.updateLabel('t')
-        elif self.status == 't':
-            self.updateLabel('f')
+        if event.button() == Qt.RightButton:
+            label_img = ImView(self.parent(), self.pixmap)
+            label_img.setWindowFlags(Qt.Window)
+            # label_img.setScaledContents(True)
+            label_img.setPixmap(self.pixmap)
+            label_img.show()
+        elif self.label is None:
+            QMessageBox.warning(
+                self.parent(), "Attention!",
+                unicode("Please choose a label!"))
+        else:
+            if self.status == 'f' or self.status == '0':
+                self.updateLabel('t')
+            elif self.status == 't':
+                self.updateLabel('f')
 
     # update label information
     def updateLabel(self, status):
