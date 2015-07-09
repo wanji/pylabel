@@ -26,14 +26,23 @@ import label_common as lc
 class ImView(QLabel):
     def __init__(self, parent, pixmap):
         super(ImView, self).__init__(parent)
+        self.setAlignment(Qt.AlignCenter)
+        self.setWindowFlags(
+            Qt.Window | Qt.WindowStaysOnTopHint)
         self.pixmap = pixmap
 
     def resizeEvent(self, event):
         self.setPixmap(self.pixmap.scaled(
             self.size(), Qt.KeepAspectRatio))
 
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.hide()
+
 
 class ImShow(QLabel):
+    imview = None
+
     def __init__(self, tb_name):
         super(ImShow, self).__init__()
         self.tb_name = tb_name
@@ -84,11 +93,15 @@ class ImShow(QLabel):
     # mouse click
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.RightButton:
-            label_img = ImView(self.parent(), self.pixmap)
-            label_img.setWindowFlags(Qt.Window)
+            if ImShow.imview is None:
+                ImShow.imview = ImView(self.parent(), self.pixmap)
             # label_img.setScaledContents(True)
-            label_img.setPixmap(self.pixmap)
-            label_img.show()
+            ImShow.imview.pixmap = self.pixmap
+            ImShow.imview.resize(640, 640)
+            ImShow.imview.setPixmap(self.pixmap.scaled(
+                ImShow.imview.size(), Qt.KeepAspectRatio
+            ))
+            ImShow.imview.show()
         elif self.label is None:
             QMessageBox.warning(
                 self.parent(), "Attention!",
