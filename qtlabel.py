@@ -95,9 +95,9 @@ class ImShow(QLabel):
         if event.button() == Qt.RightButton:
             if ImShow.imview is None:
                 ImShow.imview = ImView(self.parent(), self.pixmap)
+                ImShow.imview.resize(640, 640)
             # label_img.setScaledContents(True)
             ImShow.imview.pixmap = self.pixmap
-            ImShow.imview.resize(640, 640)
             ImShow.imview.setPixmap(self.pixmap.scaled(
                 ImShow.imview.size(), Qt.KeepAspectRatio
             ))
@@ -301,6 +301,11 @@ class MainWindow(QMainWindow):
 
     @pyqtSlot()
     def on_save(self):
+        if self.sel_label is None:
+            QMessageBox.warning(
+                self.parent(), "Attention!",
+                unicode("Please choose a label!"))
+            return
         for imshow in self.imshow:
             if imshow.status == '0':
                 imshow.updateLabel('f')
