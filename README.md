@@ -3,7 +3,7 @@ Image Concepts Labeling Tool
 
 # Step-by-step example for running the tool
 
-- Preparing the data
+#### Preparing the data
 ```bash
 # Download the example dataset: BSDS300
 wget https://www.eecs.berkeley.edu/Research/Projects/CS/vision/bsds/BSDS300-images.tgz
@@ -12,8 +12,11 @@ wget https://www.eecs.berkeley.edu/Research/Projects/CS/vision/bsds/BSDS300-imag
 tar xvf BSDS300-images.tgz
 find BSDS300/ | grep jpg > image.lst
 ```
-- Edit the `label.cfg` file, specify the `labels` and `lst_path`. You may also want to adjust the `image_rows` and `image_cols`.
-- Start the program
+#### Edit the `label.cfg` file
+
+Specify the `labels` and `lst_path`. You may also want to adjust the `image_rows` and `image_cols`.
+
+#### Start the program
 ```bash
 python qtlabel.py
 ```
