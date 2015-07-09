@@ -92,16 +92,15 @@ class ImShow(QLabel):
 
     # mouse click
     def mouseReleaseEvent(self, event):
-        if event.button() == Qt.RightButton:
+        if event.button() == Qt.LeftButton:
             if ImShow.imview is None:
                 ImShow.imview = ImView(self.parent(), self.pixmap)
-                ImShow.imview.resize(640, 640)
-            # label_img.setScaledContents(True)
+                # ImShow.imview.resize(640, 640)
             ImShow.imview.pixmap = self.pixmap
             ImShow.imview.setPixmap(self.pixmap.scaled(
                 ImShow.imview.size(), Qt.KeepAspectRatio
             ))
-            ImShow.imview.show()
+            ImShow.imview.showMaximized()
         elif self.label is None:
             QMessageBox.warning(
                 self.parent(), "Attention!",
