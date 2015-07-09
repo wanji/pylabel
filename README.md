@@ -41,7 +41,8 @@ The are 3 different background colors for each image:
 2. Blue: this image is a positive sample for the selected label
 3. Red: this image is a negative sample for the selected label
 
-You can click a image to change its background color. Once you click an image, the label will be saved to the database.
+You can click an image to open image viewer, which allows you view the large images.
+Click an image with right mouse button to change its background color. Once you right click an image, the label will be saved to the database.
 
 #### Bottom: progress display and buttons
 
