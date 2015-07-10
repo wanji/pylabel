@@ -336,4 +336,11 @@ def main():
 
 
 if __name__ == '__main__':
+    # Enable the hot keys on Mac OS
+    try:
+        from PyQt4.Qt import qt_set_sequence_auto_mnemonic
+        qt_set_sequence_auto_mnemonic(True)
+    except:
+        pass
+
     main()
