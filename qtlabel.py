@@ -128,18 +128,36 @@ class MainWindow(QMainWindow):
         self.initUI()
         # show the first page
         self.setProc(0)
+        self.KEY_PRESS_DELAY = 3600 * 24
+        self.pressed_key = None
 
     def __del__(self):
         self.conn.commit()
         print "Bye!"
 
     def keyPressEvent(self, event):
+        if event.isAutoRepeat() or self.pressed_key is not None:
+            return
         if event.key() in [ord('W'), ord('w')]:
-            self.btn_save.click()
+            self.btn_save.animateClick(self.KEY_PRESS_DELAY)
         elif event.key() in [ord('E'), ord('e')]:
-            self.btn_prev.click()
+            self.btn_prev.animateClick(self.KEY_PRESS_DELAY)
         elif event.key() in [ord('R'), ord('r')]:
-            self.btn_next.click()
+            self.btn_next.animateClick(self.KEY_PRESS_DELAY)
+        else:
+            return
+        self.pressed_key = event.key()
+
+    def keyReleaseEvent(self, event):
+        if event.isAutoRepeat() or self.pressed_key != event.key():
+            return
+        if event.key() in [ord('W'), ord('w')]:
+            self.btn_save.animateClick(0)
+        elif event.key() in [ord('E'), ord('e')]:
+            self.btn_prev.animateClick(0)
+        elif event.key() in [ord('R'), ord('r')]:
+            self.btn_next.animateClick(0)
+        self.pressed_key = None
 
     # Load QT configuration
     def load_qt_cfg(self):
@@ -288,9 +306,17 @@ class MainWindow(QMainWindow):
 
     @pyqtSlot()
     def on_check(self):
+        if len(self.label_rbtns) is 1 and not self.label_rbtns[0].isChecked():
+            self.label_rbtns[0].setChecked(True)
+        cur_sel = None
         for i in range(len(self.labels.split())):
+            print self.label_rbtns[i].isChecked()
             if self.label_rbtns[i].isChecked():
-                self.sel_label = self.labels.split()[i]
+                cur_sel = self.labels.split()[i]
+                break
+        if self.sel_label == cur_sel:
+            return
+        self.sel_label = cur_sel
         self.updateTask(self.sel_label)
 
         # SQL for fetch unlabeled image
