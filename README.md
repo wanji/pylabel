@@ -37,20 +37,23 @@ After choosing a label from the list, you can start labeling.
 
 The are 3 different background colors for each image:
 
-1. Green: this image is unlabelled
-2. Blue: this image is a positive sample for the selected label
-3. Red: this image is a negative sample for the selected label
+1. **Green**: this image is unlabelled
+2. **Blue**: this image is a positive sample for the selected label
+3. **Red**: this image is a negative sample for the selected label
 
-You can click an image to open image viewer, which allows you view the large images.
-Click an image with right mouse button to change its background color. Once you right click an image, the label will be saved to the database.
+Operations related to Image Browser:
+
+1. **Click an image** to open image viewer, which allows you view the large images.
+2. **Click the image viewer** to close it.
+3. **Right click an image** to change its label. Everytime you *right click* an image, the label will be written to the database. 
 
 #### Bottom: progress display and buttons
 
 The are three buttons at the bottom:
 
-1. `Prev(E)`(alt+e): move to the previous page.
-2. `Next(R)`(alt+r): move to the next page.
-3. `Save & Next(W)`(alt+w): **mark all the Green images to Red**, and then move to the next page.
+1. `Prev(E)`(HotKey: `E`): move to the previous page.
+2. `Next(R)`(HotKey: `R`): move to the next page.
+3. `Save & Next(W)`(HotKey: `W`): **mark all the Green images to Red**, and then move to the next page. 
 
 # How to get the labels?
 
