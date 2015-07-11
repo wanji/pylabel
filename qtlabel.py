@@ -133,6 +133,14 @@ class MainWindow(QMainWindow):
         self.conn.commit()
         print "Bye!"
 
+    def keyPressEvent(self, event):
+        if event.key() in [ord('W'), ord('w')]:
+            self.btn_save.click()
+        elif event.key() in [ord('E'), ord('e')]:
+            self.btn_prev.click()
+        elif event.key() in [ord('R'), ord('r')]:
+            self.btn_next.click()
+
     # Load QT configuration
     def load_qt_cfg(self):
         # selected label
@@ -226,9 +234,9 @@ class MainWindow(QMainWindow):
         self.imshow = [ImShow(self.tb_name) for x in range(self.pagesize)]
 
         self.lcl_proc = QLabel("Proc: %d/%d" % (1, self.npages))
-        self.btn_save = QPushButton("Save && Next(&W)")
-        self.btn_prev = QPushButton("Prev(&E)")
-        self.btn_next = QPushButton("Next(&R)")
+        self.btn_save = QPushButton("Save && Next(W)")
+        self.btn_prev = QPushButton("Prev(E)")
+        self.btn_next = QPushButton("Next(R)")
 
         # Layouts
         layout_labels = QGridLayout()
@@ -337,10 +345,10 @@ def main():
 
 if __name__ == '__main__':
     # Enable the hot keys on Mac OS
-    try:
-        from PyQt4.Qt import qt_set_sequence_auto_mnemonic
-        qt_set_sequence_auto_mnemonic(True)
-    except:
-        pass
+    # try:
+    #     from PyQt4.Qt import qt_set_sequence_auto_mnemonic
+    #     qt_set_sequence_auto_mnemonic(True)
+    # except:
+    #     pass
 
     main()
