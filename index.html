@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Pylabel :  Tools for image concepts labeling. Implemented in the Python language">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Pylabel</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/wanji/pylabel">View on GitHub</a>
+
+          <h1 id="project_title">Pylabel</h1>
+          <h2 id="project_tagline"> Tools for image concepts labeling. Implemented in the Python language</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/wanji/pylabel/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/wanji/pylabel/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="image-concepts-labeling-tool" class="anchor" href="#image-concepts-labeling-tool" aria-hidden="true"><span class="octicon octicon-link"></span></a>Image Concepts Labeling Tool</h1>
+
+<h1>
+<a id="step-by-step-example-for-running-the-tool" class="anchor" href="#step-by-step-example-for-running-the-tool" aria-hidden="true"><span class="octicon octicon-link"></span></a>Step-by-step example for running the tool</h1>
+
+<h4>
+<a id="preparing-the-data" class="anchor" href="#preparing-the-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Preparing the data</h4>
+
+<div class="highlight highlight-bash"><pre><span class="pl-c"># Download the example dataset: BSDS300</span>
+wget https://www.eecs.berkeley.edu/Research/Projects/CS/vision/bsds/BSDS300-images.tgz
+
+<span class="pl-c"># Extract the images and create image list</span>
+tar xvf BSDS300-images.tgz
+find BSDS300/ <span class="pl-k">|</span> grep jpg <span class="pl-k">&gt;</span> image.lst</pre></div>
+
+<h4>
+<a id="edit-the-labelcfg-file" class="anchor" href="#edit-the-labelcfg-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Edit the <code>label.cfg</code> file</h4>
+
+<p>Specify the <code>labels</code> and <code>lst_path</code>. You may also want to adjust the <code>image_rows</code> and <code>image_cols</code>.</p>
+
+<h4>
+<a id="start-the-program" class="anchor" href="#start-the-program" aria-hidden="true"><span class="octicon octicon-link"></span></a>Start the program</h4>
+
+<div class="highlight highlight-bash"><pre>python qtlabel.py</pre></div>
+
+<h1>
+<a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use?</h1>
+
+<p>After start the program, you will see the following UI.  There are 3 parts in the UI: top/middle/bottom.</p>
+
+<p><img src="https://raw.githubusercontent.com/wanji/pylabel/master/screenshot.png" alt="QTLabel"></p>
+
+<h4>
+<a id="top-label-list" class="anchor" href="#top-label-list" aria-hidden="true"><span class="octicon octicon-link"></span></a>Top: Label list</h4>
+
+<p>In this example, the label list contains: <code>animal</code>, <code>flower</code> and <code>human</code>, which are specified in <code>label.cfg</code>
+After choosing a label from the list, you can start labeling.</p>
+
+<h4>
+<a id="middle-image-browser" class="anchor" href="#middle-image-browser" aria-hidden="true"><span class="octicon octicon-link"></span></a>Middle: Image browser</h4>
+
+<p>The are 3 different background colors for each image:</p>
+
+<ol>
+<li>
+<strong>Green</strong>: this image is unlabelled</li>
+<li>
+<strong>Blue</strong>: this image is a positive sample for the selected label</li>
+<li>
+<strong>Red</strong>: this image is a negative sample for the selected label</li>
+</ol>
+
+<p>Operations related to Image Browser:</p>
+
+<ol>
+<li>
+<strong>Click an image</strong> to open image viewer, which allows you view the large images.</li>
+<li>
+<strong>Click the image viewer</strong> to close it.</li>
+<li>
+<strong>Right click an image</strong> to change its label. Everytime you <em>right click</em> an image, the label will be written to the database. </li>
+</ol>
+
+<h4>
+<a id="bottom-progress-display-and-buttons" class="anchor" href="#bottom-progress-display-and-buttons" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bottom: progress display and buttons</h4>
+
+<p>The are three buttons at the bottom:</p>
+
+<ol>
+<li>
+<code>Prev(E)</code>(HotKey: <code>E</code>): move to the previous page.</li>
+<li>
+<code>Next(R)</code>(HotKey: <code>R</code>): move to the next page.</li>
+<li>
+<code>Save &amp; Next(W)</code>(HotKey: <code>W</code>): <strong>mark all the Green images to Red</strong>, and then move to the next page. </li>
+</ol>
+
+<h1>
+<a id="how-to-get-the-labels" class="anchor" href="#how-to-get-the-labels" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to get the labels?</h1>
+
+<p>The label information will be stored in a sqlite3 database, which can be accessed via standard sqlite3 browser, e.g.</p>
+
+<ol>
+<li><a href="http://sqlitebrowser.org">sqlitebrowser</a></li>
+<li><a href="https://addons.mozilla.org/En-us/firefox/addon/sqlite-manager">SQLite Manager</a></li>
+</ol>
+
+<p>Positive samples will be marked as <code>t</code>, negative samples will be marked as <code>f</code>, unlabelled samples will be marked as <code>0</code>.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Pylabel maintained by <a href="https://github.com/wanji">wanji</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
