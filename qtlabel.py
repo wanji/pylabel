@@ -21,6 +21,7 @@ import sqlite3
 import numpy as np
 
 import label_common as lc
+from label_common import STATUS_NEG, STATUS_NON, STATUS_POS
 
 
 class ImView(QLabel):
@@ -52,7 +53,7 @@ class ImShow(QLabel):
         self.label = None
         self.cursor = None
         self.setMinimumSize(32, 32)
-        self.status = '0'
+        self.status = STATUS_NON
         self.margin = QSize(10, 10)
 
     # Set Image
@@ -60,7 +61,7 @@ class ImShow(QLabel):
         self.imname = imname
         if None == self.imname:
             self.pixmap = None
-            self.status = '0'
+            self.status = STATUS_NON
             self.setEnabled(False)
         else:
             if None != label:
@@ -83,9 +84,9 @@ class ImShow(QLabel):
         if None != self.pixmap:
             self.setPixmap(self.pixmap.scaled(self.size() - self.margin,
                                               Qt.KeepAspectRatio))
-        if self.status == 'f':
+        if self.status == STATUS_NEG:
             self.setStyleSheet("QLabel { background-color : red; }")
-        elif self.status == 't':
+        elif self.status == STATUS_POS:
             self.setStyleSheet("QLabel { background-color : blue; }")
         else:
             self.setStyleSheet("QLabel { background-color : green; }")
@@ -106,10 +107,10 @@ class ImShow(QLabel):
                 self.parent(), "Attention!",
                 unicode("Please choose a label!"))
         else:
-            if self.status == 'f' or self.status == '0':
-                self.updateLabel('t')
-            elif self.status == 't':
-                self.updateLabel('f')
+            if self.status == STATUS_NEG or self.status == STATUS_NON:
+                self.updateLabel(STATUS_POS)
+            elif self.status == STATUS_POS:
+                self.updateLabel(STATUS_NEG)
 
     # update label information
     def updateLabel(self, status):
@@ -208,8 +209,8 @@ class MainWindow(QMainWindow):
 
     def updateTask(self, label):
         # SQL for fetch labeled images
-        self.prev_sql = "select img from %s where %s!='0'" % (
-            self.tb_name, label)
+        self.prev_sql = "select img from %s where %s!=%d" % (
+            self.tb_name, label, STATUS_NON)
 
         # SQL for view labeled image
         # view_sql = "select img, %s from %s where img=?" % (
@@ -220,10 +221,10 @@ class MainWindow(QMainWindow):
         # s_ = 1048691
         d_ = 1048676
         f_ = 1048678
-        update_sql[d_] = "update %s set %s='t' where img=?" % (
-            self.tb_name, label)
-        update_sql[f_] = "update %s set %s='f' where img=?" % (
-            self.tb_name, label)
+        update_sql[d_] = "update %s set %s=%d where img=?" % (
+            self.tb_name, label, STATUS_POS)
+        update_sql[f_] = "update %s set %s=%d where img=?" % (
+            self.tb_name, label, STATUS_NEG)
 
     # set current proc.
     def setProc(self, imidx):
@@ -329,8 +330,8 @@ class MainWindow(QMainWindow):
         self.updateTask(self.sel_label)
 
         # SQL for fetch unlabeled image
-        fetch_sql = "select img from %s where %s='0'" % (
-            self.tb_name, self.sel_label)
+        fetch_sql = "select img from %s where %s=%d" % (
+            self.tb_name, self.sel_label, STATUS_NON)
         self.cursor.execute(fetch_sql)
         item = self.cursor.fetchone()
         if None == item:
@@ -349,8 +350,8 @@ class MainWindow(QMainWindow):
                 unicode("Please choose a label!"))
             return
         for imshow in self.imshow:
-            if imshow.status == '0' or len(self.imshow) == 1:
-                imshow.updateLabel('t')
+            if imshow.status == STATUS_NON or len(self.imshow) == 1:
+                imshow.updateLabel(STATUS_POS)
         self.on_next()
 
     @pyqtSlot()
@@ -361,8 +362,8 @@ class MainWindow(QMainWindow):
                 unicode("Please choose a label!"))
             return
         for imshow in self.imshow:
-            if imshow.status == '0' or len(self.imshow) == 1:
-                imshow.updateLabel('f')
+            if imshow.status == STATUS_NON or len(self.imshow) == 1:
+                imshow.updateLabel(STATUS_NEG)
         self.on_next()
 
     @pyqtSlot()

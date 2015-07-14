@@ -11,6 +11,11 @@ import ConfigParser
 
 import sqlite3
 
+
+STATUS_POS = +1
+STATUS_NEG = -1
+STATUS_NON = 0
+
 cfg_path = 'label.cfg'
 
 
@@ -24,14 +29,15 @@ def initdb(db_path, tb_name, imlist, labels):
     curs = conn.cursor()
     sqlstr = "CREATE TABLE %s (img TEXT" % tb_name
     for label in labels:
-        sqlstr += ", %s TEXT" % label
+        sqlstr += ", %s INT" % label
     sqlstr += ");"
     print sqlstr
     curs.execute(sqlstr)
     # Create index for 'img' for fast query
     curs.execute("CREATE  INDEX 'main'.'idx' ON 'labels' ('img' ASC)")
 
-    to_db = [tuple([line]) + tuple(['0'] * len(labels)) for line in imlist]
+    to_db = [tuple([line]) + tuple([STATUS_NON] * len(labels))
+             for line in imlist]
 
     fields = "img"
     poses = "?"
