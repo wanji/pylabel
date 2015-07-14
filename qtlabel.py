@@ -138,8 +138,10 @@ class MainWindow(QMainWindow):
     def keyPressEvent(self, event):
         if event.isAutoRepeat() or self.pressed_key is not None:
             return
-        if event.key() in [ord('W'), ord('w')]:
-            self.btn_save.animateClick(self.KEY_PRESS_DELAY)
+        if event.key() in [ord('Q'), ord('q')]:
+            self.btn_save_pos.animateClick(self.KEY_PRESS_DELAY)
+        elif event.key() in [ord('W'), ord('w')]:
+            self.btn_save_neg.animateClick(self.KEY_PRESS_DELAY)
         elif event.key() in [ord('E'), ord('e')]:
             self.btn_prev.animateClick(self.KEY_PRESS_DELAY)
         elif event.key() in [ord('R'), ord('r')]:
@@ -151,8 +153,10 @@ class MainWindow(QMainWindow):
     def keyReleaseEvent(self, event):
         if event.isAutoRepeat() or self.pressed_key != event.key():
             return
-        if event.key() in [ord('W'), ord('w')]:
-            self.btn_save.animateClick(0)
+        if event.key() in [ord('Q'), ord('q')]:
+            self.btn_save_pos.animateClick(0)
+        elif event.key() in [ord('W'), ord('w')]:
+            self.btn_save_neg.animateClick(0)
         elif event.key() in [ord('E'), ord('e')]:
             self.btn_prev.animateClick(0)
         elif event.key() in [ord('R'), ord('r')]:
@@ -234,10 +238,12 @@ class MainWindow(QMainWindow):
             self.btn_prev.setEnabled(True)
         if pos + self.pagesize >= self.nimgs:
             self.btn_next.setEnabled(False)
-            # self.btn_save.setEnabled(False)
+            # self.btn_save_pos.setEnabled(False)
+            # self.btn_save_neg.setEnabled(False)
         else:
             self.btn_next.setEnabled(True)
-            self.btn_save.setEnabled(True)
+            self.btn_save_pos.setEnabled(True)
+            self.btn_save_neg.setEnabled(True)
         print "Current position: ", self.pos
 
     def initUI(self):
@@ -252,7 +258,8 @@ class MainWindow(QMainWindow):
         self.imshow = [ImShow(self.tb_name) for x in range(self.pagesize)]
 
         self.lcl_proc = QLabel("Proc: %d/%d" % (1, self.npages))
-        self.btn_save = QPushButton("Save && Next(W)")
+        self.btn_save_pos = QPushButton("Pos && Next(Q)")
+        self.btn_save_neg = QPushButton("Neg && Next(W)")
         self.btn_prev = QPushButton("Prev(E)")
         self.btn_next = QPushButton("Next(R)")
 
@@ -275,7 +282,8 @@ class MainWindow(QMainWindow):
 
         # setup control buttons
         layout_control.addWidget(self.lcl_proc)
-        layout_control.addWidget(self.btn_save)
+        layout_control.addWidget(self.btn_save_pos)
+        layout_control.addWidget(self.btn_save_neg)
         layout_control.addWidget(self.btn_prev)
         layout_control.addWidget(self.btn_next)
 
@@ -291,7 +299,8 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Label")
 
         # signals and slots
-        self.btn_save.clicked.connect(self.on_save)
+        self.btn_save_pos.clicked.connect(self.on_save_pos)
+        self.btn_save_neg.clicked.connect(self.on_save_neg)
         self.btn_prev.clicked.connect(self.on_prev)
         self.btn_next.clicked.connect(self.on_next)
         for btn in self.label_rbtns:
@@ -333,14 +342,26 @@ class MainWindow(QMainWindow):
             self.setProc(self.imlist.index(item[0]))
 
     @pyqtSlot()
-    def on_save(self):
+    def on_save_pos(self):
         if self.sel_label is None:
             QMessageBox.warning(
                 self.parent(), "Attention!",
                 unicode("Please choose a label!"))
             return
         for imshow in self.imshow:
-            if imshow.status == '0':
+            if imshow.status == '0' or len(self.imshow) == 1:
+                imshow.updateLabel('t')
+        self.on_next()
+
+    @pyqtSlot()
+    def on_save_neg(self):
+        if self.sel_label is None:
+            QMessageBox.warning(
+                self.parent(), "Attention!",
+                unicode("Please choose a label!"))
+            return
+        for imshow in self.imshow:
+            if imshow.status == '0' or len(self.imshow) == 1:
                 imshow.updateLabel('f')
         self.on_next()
 
@@ -356,7 +377,8 @@ class MainWindow(QMainWindow):
         pos = self.pos + self.pagesize
 
         if pos >= self.nimgs:
-            self.btn_save.setEnabled(False)
+            self.btn_save_pos.setEnabled(False)
+            self.btn_save_neg.setEnabled(False)
             return
 
         self.setProc(pos)
