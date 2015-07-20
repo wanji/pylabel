@@ -139,13 +139,13 @@ class MainWindow(QMainWindow):
     def keyPressEvent(self, event):
         if event.isAutoRepeat() or self.pressed_key is not None:
             return
-        if event.key() in [ord('Q'), ord('q')]:
+        if event.key() == Qt.Key_Q:
             self.btn_save_pos.animateClick(self.KEY_PRESS_DELAY)
-        elif event.key() in [ord('W'), ord('w')]:
+        elif event.key() == Qt.Key_W:
             self.btn_save_neg.animateClick(self.KEY_PRESS_DELAY)
-        elif event.key() in [ord('E'), ord('e')]:
+        elif event.key() == Qt.Key_E:
             self.btn_prev.animateClick(self.KEY_PRESS_DELAY)
-        elif event.key() in [ord('R'), ord('r')]:
+        elif event.key() == Qt.Key_R:
             self.btn_next.animateClick(self.KEY_PRESS_DELAY)
         elif event.key() in range(Qt.Key_F1, Qt.Key_F12+1):
             pass
@@ -156,13 +156,13 @@ class MainWindow(QMainWindow):
     def keyReleaseEvent(self, event):
         if event.isAutoRepeat() or self.pressed_key != event.key():
             return
-        if event.key() in [ord('Q'), ord('q')]:
+        if event.key() == Qt.Key_Q:
             self.btn_save_pos.animateClick(0)
-        elif event.key() in [ord('W'), ord('w')]:
+        elif event.key() == Qt.Key_W:
             self.btn_save_neg.animateClick(0)
-        elif event.key() in [ord('E'), ord('e')]:
+        elif event.key() == Qt.Key_E:
             self.btn_prev.animateClick(0)
-        elif event.key() in [ord('R'), ord('r')]:
+        elif event.key() == Qt.Key_R:
             self.btn_next.animateClick(0)
         elif event.key() in range(Qt.Key_F1, Qt.Key_F12+1):
             label_idx = event.key() - Qt.Key_F1
@@ -326,7 +326,6 @@ class MainWindow(QMainWindow):
             self.label_rbtns[0].setChecked(True)
         cur_sel = None
         for i in range(len(self.labels.split())):
-            print self.label_rbtns[i].isChecked()
             if self.label_rbtns[i].isChecked():
                 cur_sel = self.labels.split()[i]
                 break
