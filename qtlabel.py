@@ -147,6 +147,8 @@ class MainWindow(QMainWindow):
             self.btn_prev.animateClick(self.KEY_PRESS_DELAY)
         elif event.key() in [ord('R'), ord('r')]:
             self.btn_next.animateClick(self.KEY_PRESS_DELAY)
+        elif event.key() in range(Qt.Key_F1, Qt.Key_F12+1):
+            pass
         else:
             return
         self.pressed_key = event.key()
@@ -162,6 +164,10 @@ class MainWindow(QMainWindow):
             self.btn_prev.animateClick(0)
         elif event.key() in [ord('R'), ord('r')]:
             self.btn_next.animateClick(0)
+        elif event.key() in range(Qt.Key_F1, Qt.Key_F12+1):
+            label_idx = event.key() - Qt.Key_F1
+            if label_idx < len(self.label_rbtns):
+                self.label_rbtns[label_idx].click()
         self.pressed_key = None
 
     # Load QT configuration
@@ -393,11 +399,4 @@ def main():
 
 
 if __name__ == '__main__':
-    # Enable the hot keys on Mac OS
-    # try:
-    #     from PyQt4.Qt import qt_set_sequence_auto_mnemonic
-    #     qt_set_sequence_auto_mnemonic(True)
-    # except:
-    #     pass
-
     main()
