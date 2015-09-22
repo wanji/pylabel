@@ -33,6 +33,10 @@ After start the program, you will see the following UI.  There are 3 parts in th
 In this example, the label list contains: `animal`, `flower` and `human`, which are specified in `label.cfg`
 After choosing a label from the list, you can start labeling.
 
+```
+TIPS: Press F1~F12 to select the first ~ twelfth label.
+```
+
 #### Middle: Image browser
 
 The are 3 different background colors for each image:
@@ -51,9 +55,10 @@ Operations related to Image Browser:
 
 The are three buttons at the bottom:
 
-1. `Prev(E)`(HotKey: `E`): move to the previous page.
-2. `Next(R)`(HotKey: `R`): move to the next page.
-3. `Save & Next(W)`(HotKey: `W`): **mark all the Green images to Red**, and then move to the next page. 
+1. `Pos & Next(Q)`(HotKey: `Q`): **mark all the Green images to Blue**, then move to the next page. 
+2. `Neg & Next(W)`(HotKey: `W`): **mark all the Green images to Red**, then move to the next page. 
+3. `Prev(E)`      (HotKey: `E`): move to the previous page.
+4. `Next(R)`      (HotKey: `R`): move to the next page.
 
 # How to get the labels?
 
@@ -62,4 +67,4 @@ The label information will be stored in a sqlite3 database, which can be accesse
 1. [sqlitebrowser](http://sqlitebrowser.org)
 2. [SQLite Manager](https://addons.mozilla.org/En-us/firefox/addon/sqlite-manager)
 
-Positive samples will be marked as `t`, negative samples will be marked as `f`, unlabelled samples will be marked as `0`.
+Positive samples will be marked as `1`, negative samples will be marked as `-1`, unlabelled samples will be marked as `0`.
