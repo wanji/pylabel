@@ -67,4 +67,16 @@ The label information will be stored in a sqlite3 database, which can be accesse
 1. [sqlitebrowser](http://sqlitebrowser.org)
 2. [SQLite Manager](https://addons.mozilla.org/En-us/firefox/addon/sqlite-manager)
 
+You may also get the labels from command line like this:
+
+```bash
+sqlite3 label.sqlite "select * from labels"
+```
+
+The above command will print a table of labels. The following command prints the schema of the table:
+
+```bash
+sqlite3 label.sqlite ".schema labels"
+```
+
 Positive samples will be marked as `1`, negative samples will be marked as `-1`, unlabelled samples will be marked as `0`.
